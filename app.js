@@ -18,6 +18,12 @@ require("./config")(app);
 const indexRoutes = require("./routes/index.routes");
 app.use("/api", indexRoutes);
 
+const kennelRoutes = require('./routes/kennel.routes');
+app.use('/api', kennelRoutes);
+
+const dogRoutes = require('./routes/dogs.routes');
+app.use('/api', dogRoutes);
+
 const authRoutes = require("./routes/auth.routes");
 app.use("/auth", authRoutes);
 
