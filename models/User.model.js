@@ -18,6 +18,9 @@ const userSchema = new Schema(
       type: String,
       required: [true, "Name is required."],
     },
+    isKennelsManager: {
+      type: Boolean,
+    },
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`
