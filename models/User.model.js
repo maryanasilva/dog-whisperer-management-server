@@ -18,8 +18,10 @@ const userSchema = new Schema(
       type: String,
       required: [true, "Name is required."],
     },
-    isKennelsManager: {
-      type: Boolean,
+    userType: {
+      type: String,
+      required: true,
+      enum: ["Manager", "User"],
     },
   },
   {
