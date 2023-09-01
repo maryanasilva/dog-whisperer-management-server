@@ -18,6 +18,7 @@ const userSchema = new Schema(
       type: String,
       required: [true, "Name is required."],
     },
+    // set the two possible users ('manager' and 'user')
     userType: {
       type: String,
       required: true,
