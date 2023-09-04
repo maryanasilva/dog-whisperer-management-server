@@ -6,6 +6,8 @@ const mongoose = require("mongoose");
 const Kennel = require("../models/Kennel.model");
 const Dog = require("../models/Dog.model");
 
+const { isAuthenticated } = require("../middleware/jwt.middleware");
+
 // POST route that creates a new Dog
 router.post("/dogs", async (req, res) => {
   const { name, age, description, genre, size, image } = req.body;
@@ -84,9 +86,10 @@ router.delete("/dogs/:dogId", async (req, res) => {
   }
 });
 
-router.post("/:kennelId/kennels", async (req, res) => {
+router.post("/:kennelId/kennels", isAuthenticated, async (req, res) => {
   const { kennelId } = req.params;
   const { name, age, description, genre, size, image } = req.body;
+  const user = req.payload;
   try {
     let newDog = await Dog.create({
       name,
@@ -97,14 +100,17 @@ router.post("/:kennelId/kennels", async (req, res) => {
       image,
     });
 
-     await Kennel.findByIdAndUpdate(kennelId, {
+    await Kennel.findByIdAndUpdate(kennelId, {
       $push: { dogs: newDog._id },
-      });
+    });
 
-      await Dog.findByIdAndUpdate(newDog._id, {
-        $push: {kennel: kennelId }
-      })
-    
+    await Dog.findByIdAndUpdate(newDog._id, {
+      $push: { kennel: kennelId },
+    });
+
+    await Dog.findByIdAndUpdate(newDog._id, {
+      $push: { owner: user._id },
+    });
 
     res.json(newDog);
   } catch (error) {
