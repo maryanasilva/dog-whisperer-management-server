@@ -10,6 +10,10 @@ const dogSchema = new Schema({
     kennel: {
         type: Schema.Types.ObjectId,
         ref: 'Kennel'
+    },
+    owner: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
     }
 });
 
