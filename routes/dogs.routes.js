@@ -35,10 +35,20 @@ router.get("/dogs", async (req, res) => {
 });
 
 // GET route that gets the info of a specific dog
-router.get("/dogs/:dogId", async (req, res) => {
+/* router.get("/dogs/:dogId", async (req, res) => {
   const { dogId } = req.params;
   try {
     let foundDog = await Dog.findById(dogId).populate("kennel");
+    res.json(foundDog);
+  } catch (error) {
+    res.json(error);
+  }
+}); */
+
+router.get("/dogs/:kennelId", async (req, res) => {
+  const { kennelId } = req.params;
+  try {
+    let foundDog = await Kennel.findById(kennelId).populate("dogs");
     res.json(foundDog);
   } catch (error) {
     res.json(error);
@@ -74,8 +84,8 @@ router.delete("/dogs/:dogId", async (req, res) => {
   }
 });
 
-router.post("/:dogId/kennels", async (req, res) => {
-  const { dogId } = req.params;
+router.post("/:kennelId/kennels", async (req, res) => {
+  const { kennelId } = req.params;
   const { name, age, description, genre, size, image } = req.body;
   try {
     let newDog = await Dog.create({
@@ -87,11 +97,16 @@ router.post("/:dogId/kennels", async (req, res) => {
       image,
     });
 
-    let response = await Kennel.findByIdAndUpdate(dogId, {
+     await Kennel.findByIdAndUpdate(kennelId, {
       $push: { dogs: newDog._id },
-    });
+      });
 
-    res.json(response);
+      await Dog.findByIdAndUpdate(newDog._id, {
+        $push: {kennel: kennelId }
+      })
+    
+
+    res.json(newDog);
   } catch (error) {
     res.json(error);
   }
