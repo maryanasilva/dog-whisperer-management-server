@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 // Require Data Models
 const Kennel = require("../models/Kennel.model");
 const Dog = require("../models/Dog.model");
+const User = require("../models/User.model");
 
 const { isAuthenticated } = require("../middleware/jwt.middleware");
 
@@ -36,8 +37,8 @@ router.get("/dogs", async (req, res) => {
   }
 });
 
-// GET route that gets the info of a specific dog
-/* router.get("/dogs/:dogId", async (req, res) => {
+// GET route that gets the info of a specific dog to update
+router.get("/singledog/:dogId", async (req, res) => {
   const { dogId } = req.params;
   try {
     let foundDog = await Dog.findById(dogId).populate("kennel");
@@ -45,8 +46,9 @@ router.get("/dogs", async (req, res) => {
   } catch (error) {
     res.json(error);
   }
-}); */
+});
 
+// GET route that gets the info of a specific dog
 router.get("/dogs/:kennelId", async (req, res) => {
   const { kennelId } = req.params;
   try {
@@ -86,6 +88,7 @@ router.delete("/dogs/:dogId", async (req, res) => {
   }
 });
 
+// CREATE a route to create a dog
 router.post("/:kennelId/kennels", isAuthenticated, async (req, res) => {
   const { kennelId } = req.params;
   const { name, age, description, genre, size, image } = req.body;
@@ -100,16 +103,23 @@ router.post("/:kennelId/kennels", isAuthenticated, async (req, res) => {
       image,
     });
 
+    // new dog id -> kennel
     await Kennel.findByIdAndUpdate(kennelId, {
       $push: { dogs: newDog._id },
     });
 
+    // kennel -> dog
     await Dog.findByIdAndUpdate(newDog._id, {
       $push: { kennel: kennelId },
     });
 
+    // user -> dog
     await Dog.findByIdAndUpdate(newDog._id, {
       $push: { owner: user._id },
+    });
+
+    await User.findByIdAndUpdate(user._id, {
+      $push: { ownedDogs: newDog._id },
     });
 
     res.json(newDog);
