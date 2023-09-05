@@ -10,7 +10,7 @@ const User = require("../models/User.model");
 router.get("/profile", isAuthenticated, async (req, res) => {
   const user = req.payload;
   try {
-    let userInfo = await User.findById(user._id);
+    let userInfo = await User.findById(user._id).populate("ownedDogs");
     res.json(userInfo);
   } catch (error) {
     res.json(error);
