@@ -14,7 +14,15 @@ const dogSchema = new Schema({
     owner: {
         type: Schema.Types.ObjectId,
         ref: 'User'
-    }
+    },
+    adoptionRequests: {
+        type: Schema.Types.ObjectId,
+        ref: "Adoptionrequest"
+    },
+    adoptionRequests: [{
+        type: Schema.Types.ObjectId,
+        ref: 'AdoptionRequest',
+    }],
 });
 
 // Export the model
