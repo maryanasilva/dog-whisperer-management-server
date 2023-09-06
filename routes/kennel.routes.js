@@ -31,24 +31,17 @@ router.get("/kennels/:kennelId", async (req, res) => {
 });
 
 // POST route to create a kennels
-router.post("/:kennelId/dogs", async (req, res) => {
-  const { kennelId } = req.params;
+router.post("/kennels/addKennel", async (req, res) => {
   const { name, description, location, image } = req.body;
   try {
-    let newDog = await Kennel.create({
+    let newKennel = await Kennel.create({
       name,
       description,
       location,
       image,
-      kennel: kennelId,
-      dogs: [],
     });
 
-    let response = await Kennel.findByIdAndUpdate(kennelId, {
-      $push: { dogs: newDog._id },
-    });
-
-    res.json(response);
+    res.json(newKennel);
   } catch (error) {
     res.json(error);
   }
