@@ -13,7 +13,7 @@ const cookieParser = require("cookie-parser");
 // unless the request is made from the same domain, by default express wont accept POST requests
 const cors = require("cors");
 
-const FRONTEND_URL =  "http://localhost:5173";
+const FRONTEND_URL = "https://bespoke-haupia-2cc680.netlify.app";
 
 // Middleware configuration
 module.exports = (app) => {
@@ -24,7 +24,7 @@ module.exports = (app) => {
   // controls a very specific header to pass headers from the frontend
   app.use(
     cors({
-      origin: [FRONTEND_URL],
+      origin: [FRONTEND_URL, "http://localhost:5173"],
     })
   );
 
