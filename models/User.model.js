@@ -24,6 +24,12 @@ const userSchema = new Schema(
       required: true,
       enum: ["Manager", "User"],
     },
+    ownedDogs: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Dog",
+      },
+    ],
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`
