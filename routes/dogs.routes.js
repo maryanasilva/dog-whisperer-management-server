@@ -9,7 +9,7 @@ const User = require("../models/User.model");
 
 const { isAuthenticated } = require("../middleware/jwt.middleware");
 
-<<<<<<< HEAD
+
 // POST route that creates a new Dog
 router.post("/dogs", async (req, res) => {
   const { name, age, description, genre, size, image } = req.body;
@@ -27,10 +27,6 @@ router.post("/dogs", async (req, res) => {
     res.json(error);
   }
 });
-=======
-// HTTP Verbs: GET, POST, PUT, DELETE
-// Since we're building a REST API, we're sending data via JSON, and using HTTP Requests for communication.
->>>>>>> 3b062739e89b1cec8be827ba2801b5a51e241164
 
 // GET route that gets all the dogs
 router.get("/dogs", async (req, res) => {
@@ -132,7 +128,6 @@ router.delete("/dogs/:dogId", async (req, res) => {
   }
 });
 
-<<<<<<< HEAD
 router.post("/:kennelId/kennels", isAuthenticated, async (req, res) => {
   const { kennelId } = req.params;
   const { name, age, description, genre, size, image } = req.body;
@@ -165,7 +160,5 @@ router.post("/:kennelId/kennels", isAuthenticated, async (req, res) => {
   }
 });
 
-=======
->>>>>>> 3b062739e89b1cec8be827ba2801b5a51e241164
 // Exporting Express Router with all its routes
 module.exports = router;
