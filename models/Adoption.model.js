@@ -1,10 +1,9 @@
-const mongoose = require('mongoose');
+const {Schema, model} = require('mongoose');
 
-const adoptionSchema = new mongoose.Schema({
+const adoptionSchema = new Schema({
   dogId: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: 'Dog', // Reference to the Dog model
-    required: true,
   },
   name: {
     type: String,
@@ -23,14 +22,6 @@ const adoptionSchema = new mongoose.Schema({
     enum: ['Pending', 'Approved', 'Rejected'],
     default: 'Pending',
   },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-  updatedAt: {
-    type: Date,
-    default: Date.now,
-  },
 });
 
-module.exports = mongoose.model('Adoption', adoptionSchema);
+module.exports = model('Adoption', adoptionSchema);
